@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Arboles binarios :: Parser Expresiones</title>
+    
     <script src="arbol y nodo.js"></script>
     <script src="Funciones.js"></script>
   </head>
@@ -22,24 +23,53 @@
     <script>
       let arbol;
       const btnCrearArb = document.getElementById("btnCrearArb");
+      
       btnCrearArb.addEventListener("click", () => {
         let ecuacion = document.getElementById("txtEcuacion").value;
-        arbol = crearArbol(ecuacion);
         let msg = document.getElementById("info");
-        msg.innerHTML += "<p>Se ha creo el arbol con raiz: " + arbol.raiz.valor + "</p>";
+        
+        if (!ecuacion.trim()) {
+            msg.innerHTML += "<p style='color:red;'>Ingrese una ecuación.</p>";
+            return;
+        }
+
+        arbol = crearArbol(ecuacion);
+        
+        // Verifica que se haya podido crear la raíz antes de mostrar el valor
+        if (arbol && arbol.raiz) {
+            msg.innerHTML += "<p>Se ha creo el arbol con raiz: " + arbol.raiz.valor + "</p>";
+        } else {
+             msg.innerHTML += "<p style='color:red;'>Error al crear el árbol. Verifique la sintaxis de la ecuación.</p>";
+        }
       });
+      
       const btnResolverPre = document.getElementById("btnResolverPre");
+      
       btnResolverPre.addEventListener("click", () => {
+        let msg = document.getElementById("info");
+        
+        if (!arbol || !arbol.raiz) {
+            msg.innerHTML += "<p style='color:red;'>Primero debe crear el árbol exitosamente.</p>";
+            return;
+        }
+        
         let pre = arbol.preOrder();
         let res = resolverPreOrder(pre);
-        let msg = document.getElementById("info");
         msg.innerHTML += "<p>PreOrder: " + pre + "</p>" + "<p> Resultado PreOrder: " + res + "</p>";
       });
+      
       const btnResolverPost = document.getElementById("btnResolverPost");
+      
       btnResolverPost.addEventListener("click", () => {
+        let msg = document.getElementById("info");
+        
+        if (!arbol || !arbol.raiz) {
+            msg.innerHTML += "<p style='color:red;'>Primero debe crear el árbol exitosamente.</p>";
+            return;
+        }
+
         let post = arbol.postOrder();
         let res = resolverPostOrder(post);
-        let msg = document.getElementById("info");
         msg.innerHTML += "<p>PostOrder: " + post + "</p>" + "<p> Resultado PostOrder: " + res + "</p>";
       });
     </script>
