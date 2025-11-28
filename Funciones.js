@@ -1,6 +1,10 @@
-function stringToNodeArray(expresion) {
+function separarExpresiones(str) { 
+    return str.split(" ").filter(t => t.length > 0);
+}
+
+function Prioridad(expresion) {
     const tokens = expresion.match(/(\d+|\*|\/|\+|-|\^)/g);
-    return tokens.map(token => new Nodo(token));
+    return tokens.map(token => new Nodo(token)); 
 }
 
 function eliminar(arr, index) {
@@ -12,7 +16,7 @@ function insertar(arr, index, element) {
 }
 
 function crearArbol(expresion) {
-    let exp = stringToNodeArray(expresion);
+    let exp = Prioridad(expresion);
 
     for (let i = 0; i < exp.length; i++) {
         if (exp[i].valor === "^") {
@@ -64,7 +68,7 @@ function crearArbol(expresion) {
 }
 
 function resolverPostOrder(postOrderStr) {
-    const post = stringToCharArray(postOrderStr);
+    const post = separarExpresiones(postOrderStr); 
     const pila = [];
 
     function operar(op) {
@@ -80,7 +84,7 @@ function resolverPostOrder(postOrderStr) {
 
     for (let i = 0; i < post.length; i++) {
         let simbolo = post[i];
-        if (!isNaN(Number(simbolo))) {
+        if (!isNaN(Number(simbolo))) { 
             pila.push(Number(simbolo));
         } else {
             operar(simbolo);
@@ -90,7 +94,7 @@ function resolverPostOrder(postOrderStr) {
 }
 
 function resolverPreOrder(preOrderStr) {
-    const pre = stringToCharArray(preOrderStr).reverse(); 
+    const pre = separarExpresiones(preOrderStr).reverse(); 
     const pila = [];
 
     function operar(op) {
@@ -114,3 +118,16 @@ function resolverPreOrder(preOrderStr) {
     }
     return pila[0];
 }
+
+
+function precedencia(op) {
+    if (op === '^') return 3;
+    if (op === '*' || op === '/') return 2;
+    if (op === '+' || op === '-') return 1;
+}
+
+function stringToCharArray(str) {
+    return str.split(" ").filter(t => t.length > 0);
+}
+
+
